@@ -1,65 +1,213 @@
-import Image from "next/image";
+import Link from "next/link";
+import { products, categories, getFeaturedProducts, getNewProducts, getBestsellingProducts, getAIRecommendations } from "@/lib/products";
+import { vendors } from "@/lib/vendors";
+import ProductGrid from "@/components/ProductGrid";
+import { ShieldCheck, Zap, Sparkles, Globe, Lock, Star, TrendingUp } from "lucide-react";
 
 export default function Home() {
+  const featured = getFeaturedProducts();
+  const aiPicks = getAIRecommendations(4);
+  const allCategories = categories;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div>
+      {/* ─── HERO ─── */}
+      <section className="hero">
+        {/* Floating orbs */}
+        <div className="hero-orb hero-orb--gold" />
+        <div className="hero-orb hero-orb--purple" />
+        <div className="hero-orb hero-orb--emerald" />
+
+        {/* Orbiting particles */}
+        <div className="hero-orbit">
+          <div className="hero-orbit-dot" />
+          <div className="hero-orbit-dot" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        <div className="hero-eyebrow">Enterprise Marketplace</div>
+        <h1>Where Artisans<br /><span className="hero-accent">Meet the World</span></h1>
+        <p>AI-curated collections from verified global vendors. Enterprise-grade commerce with the soul of an artisan market.</p>
+        <div className="hero-actions">
+          <Link href="#products" className="btn">Explore Collection</Link>
+          <Link href="/admin" className="btn btn-secondary">Marketplace Dashboard</Link>
         </div>
-      </main>
+        <div className="hero-stats">
+          <div className="hero-stat"><div className="hero-stat-value">{vendors.length}</div><div className="hero-stat-label">Verified Vendors</div></div>
+          <div className="hero-stat"><div className="hero-stat-value">{products.length}+</div><div className="hero-stat-label">Curated Products</div></div>
+          <div className="hero-stat"><div className="hero-stat-value">4.8</div><div className="hero-stat-label">Average Rating</div></div>
+          <div className="hero-stat"><div className="hero-stat-value">4</div><div className="hero-stat-label">Languages</div></div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="hero-scroll">
+          <div className="hero-scroll-line" />
+          <span className="hero-scroll-text">Scroll</span>
+        </div>
+      </section>
+
+      {/* ─── TRUST BANNER ─── */}
+      <div className="trust-banner">
+        <div className="trust-item"><span><ShieldCheck size={20} strokeWidth={1.5} /></span>Verified Vendors</div>
+        <div className="trust-item"><span><Zap size={20} strokeWidth={1.5} /></span>Edge-Fast Loading</div>
+        <div className="trust-item"><span><Sparkles size={20} strokeWidth={1.5} /></span>AI Curated</div>
+        <div className="trust-item"><span><Globe size={20} strokeWidth={1.5} /></span>Global Shipping</div>
+        <div className="trust-item"><span><Lock size={20} strokeWidth={1.5} /></span>Stripe Connect</div>
+      </div>
+
+      {/* ─── VENDOR MARQUEE ─── */}
+      <div className="vendor-marquee">
+        <div className="vendor-marquee-track">
+          {[...vendors, ...vendors].map((v, i) => (
+            <Link href={`/vendor/${v.slug}`} key={`${v.id}-${i}`} className="vendor-marquee-item">
+              <div className="vendor-avatar">
+                <img src={v.logo} alt={v.name} />
+              </div>
+              {v.name} <span style={{ margin: "0 0.3rem" }}>·</span> <Star size={12} fill="currentColor" /> {v.rating}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* ─── AI RECOMMENDATIONS ─── */}
+      <section className="ai-section">
+        <div className="ai-section-header">
+          <div className="ai-icon"><Sparkles size={18} /></div>
+          <h3>AI-Powered Picks</h3>
+          <span>Personalized</span>
+        </div>
+        <div className="product-grid" style={{ gridTemplateColumns: "repeat(4, 1fr)", position: "relative", zIndex: 1 }}>
+          {aiPicks.map((product, i) => {
+            const minPrice = Math.min(...product.variants.map(v => v.price));
+            return (
+              <article key={product.id} className="product-card animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s` }}>
+                <Link href={`/product/${product.id}`}>
+                  <div className="product-card-img-wrap">
+                    <img src={product.image} alt={product.name} />
+                    <span className="product-badge" style={{ background: "var(--gold)", color: "#000" }}>AI Score: {(product.aiScore * 100).toFixed(0)}%</span>
+                    <div className="product-card-overlay">
+                      <span className="btn btn-sm">Quick View</span>
+                    </div>
+                  </div>
+                </Link>
+                <div className="product-card-content">
+                  <span className="product-category">{product.category}</span>
+                  <h3><Link href={`/product/${product.id}`}>{product.name}</Link></h3>
+                  <div className="product-meta-row">
+                    <p className="product-price">${minPrice.toFixed(2)}</p>
+                    <div className="product-rating"><Star size={12} fill="currentColor" /> {product.rating}</div>
+                  </div>
+                  <div className="product-vendor"><span className="product-vendor-dot" />{product.vendorName}</div>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* ─── CATEGORY SHOWCASE ─── */}
+      <section className="category-showcase">
+        <div className="section-header">
+          <h2>Shop by Category</h2>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", margin: 0 }}>{allCategories.length} Collections</p>
+        </div>
+        <div className="category-grid">
+          {allCategories.slice(0, 4).map((cat, i) => (
+            <Link href={`/category/${cat.slug}`} key={cat.id} className="category-card" style={{ animationDelay: `${i * 0.1}s` }}>
+              <div className="category-card-img"><img src={cat.image} alt={cat.name} /></div>
+              <div className="category-card-content">
+                <h3>{cat.name}</h3>
+                <span>{cat.productCount} Products</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── FEATURED PRODUCTS ─── */}
+      {featured.length > 0 && (
+        <section className="editorial-section">
+          <div className="section-header">
+            <div>
+              <h2>Editor&apos;s Picks</h2>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.88rem", margin: 0, fontStyle: "italic" }}>Hand-selected by our curators and AI</p>
+            </div>
+            <Link href="/?featured=true" className="btn btn-secondary btn-sm">View All</Link>
+          </div>
+          <div className="product-grid" style={{ gridTemplateColumns: "repeat(4, 1fr)" }}>
+            {featured.slice(0, 4).map((product, i) => {
+              const minPrice = Math.min(...product.variants.map(v => v.price));
+              const maxPrice = Math.max(...product.variants.map(v => v.price));
+              return (
+                <article key={product.id} className="product-card animate-fade-in-up" style={{ animationDelay: `${i * 0.08}s` }}>
+                  <Link href={`/product/${product.id}`}>
+                    <div className="product-card-img-wrap">
+                      <img src={product.image} alt={product.name} />
+                      {product.new && <span className="product-badge badge-new">New</span>}
+                      {product.bestselling && <span className="product-badge badge-best">Best Seller</span>}
+                      <div className="product-card-overlay">
+                        <span className="btn btn-sm">Quick View</span>
+                      </div>
+                    </div>
+                  </Link>
+                  <div className="product-card-content">
+                    <span className="product-category">{product.category}</span>
+                    <h3><Link href={`/product/${product.id}`}>{product.name}</Link></h3>
+                    <div className="product-meta-row">
+                      <p className="product-price">${minPrice.toFixed(2)}{maxPrice > minPrice && <span className="price-range"> — ${maxPrice.toFixed(2)}</span>}</p>
+                      <div className="product-rating"><Star size={12} fill="currentColor" /> {product.rating}</div>
+                    </div>
+                    <div className="product-vendor"><span className="product-vendor-dot" />{product.vendorName}</div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* ─── EDITORIAL BANNER ─── */}
+      <section className="editorial-banner">
+        <div className="editorial-banner-content">
+          <span className="editorial-eyebrow">Our Philosophy</span>
+          <h2>A Marketplace<br />Built on Trust</h2>
+          <p>Every vendor is verified. Every product is curated. Our AI learns what you love, and our global network delivers it to your door — fast.</p>
+        </div>
+      </section>
+
+      {/* ─── FULL COLLECTION ─── */}
+      <section id="products" className="editorial-section">
+        <ProductGrid products={products} categories={categories.map(c => c.name)} title="Full Marketplace" />
+      </section>
+
+      {/* ─── VENDOR SPOTLIGHT ─── */}
+      <section className="editorial-section">
+        <div className="section-header">
+          <h2>Featured Vendors</h2>
+          <Link href="/search" className="btn btn-secondary btn-sm">All Vendors</Link>
+        </div>
+        <div className="vendor-grid">
+          {vendors.slice(0, 3).map(v => (
+            <Link href={`/vendor/${v.slug}`} key={v.id} className="vendor-card">
+              <div className="vendor-card-header">
+                <div className="vendor-logo">
+                  <img src={v.logo} alt={v.name} />
+                </div>
+                <div className="vendor-card-info">
+                  <h3>{v.name}</h3>
+                  <span><Star size={10} fill="currentColor" /> {v.rating} · {v.productCount} products</span>
+                </div>
+              </div>
+              {v.verified && <span className="vendor-verified">Verified Vendor</span>}
+              <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", margin: "0.5rem 0 0", lineHeight: 1.65 }}>{v.description.slice(0, 120)}…</p>
+              <div className="vendor-stats">
+                <div className="vendor-stat"><span className="vendor-stat-value">${(v.totalSales / 1000).toFixed(1)}k</span><span className="vendor-stat-label">Sales</span></div>
+                <div className="vendor-stat"><span className="vendor-stat-value">{v.commissionTier}%</span><span className="vendor-stat-label">Commission</span></div>
+                <div className="vendor-stat"><span className="vendor-stat-value">{v.categories.length}</span><span className="vendor-stat-label">Categories</span></div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
