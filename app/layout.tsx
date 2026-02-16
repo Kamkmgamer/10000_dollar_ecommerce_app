@@ -15,6 +15,9 @@ import FreeShippingToast from "@/components/FreeShippingToast";
 export const metadata: Metadata = {
   title: "Nexus Market | Enterprise Marketplace Platform",
   description: "The premier multi-vendor marketplace. AI-powered recommendations, global vendors, enterprise-grade commerce.",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
